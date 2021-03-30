@@ -34,15 +34,17 @@ router.get('/getsubpost',requireLogin,(req,res)=>{
 })
 
 router.post('/createpost',requireLogin,(req,res)=>{
-    const {title,body,pic} = req.body 
-    if(!title || !body || !pic){
+    const {name,fatherName,pic,cell,address} = req.body 
+    if(!name || !fatherName || !pic || !address ||!cell){
       return  res.status(422).json({error:"Plase add all the fields"})
     }
     req.user.password = undefined
     const post = new Post({
-        title,
-        body,
+        name,
+        fatherName,
         photo:pic,
+        cell,
+        address,
         postedBy:req.user
     })
     post.save().then(result=>{
@@ -63,7 +65,15 @@ router.get('/mypost',requireLogin,(req,res)=>{
         console.log(err)
     })
 })
-
+router.get('/student/:id',requireLogin, function(req, res) {  
+    Post.findById(req.params.id, function(err, article) {
+      if (!article) {
+        res.status(404).send('No result found');
+      } else {
+        res.json(article);
+      }
+    });
+  });
 router.put('/like',requireLogin,(req,res)=>{
     Post.findByIdAndUpdate(req.body.postId,{
         $push:{likes:req.user._id}

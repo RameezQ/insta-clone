@@ -4,14 +4,17 @@ import "./App.css"
 import {BrowserRouter,Route,Switch,useHistory} from 'react-router-dom'
 import Home from './components/screens/Home'
 import Signin from './components/screens/SignIn'
-import Profile from './components/screens/Profile'
+
 import Signup from './components/screens/Signup'
 import CreatePost from './components/screens/CreatePost'
 import {reducer,initialState} from './reducers/userReducer'
 import UserProfile from './components/screens/UserProfile'
-import SubscribedUserPosts from './components/screens/SubscribesUserPosts'
 import Reset from './components/screens/Reset'
 import NewPassword from './components/screens/Newpassword'
+import SideBar from './components/DashBoard/SideBar';
+import Main from './components/DashBoard/Main';
+import StudentList from './components/StudentList';
+import StudentTab from './components/StudentTab';
 export const UserContext = createContext()
 
 
@@ -29,32 +32,33 @@ const Routing = ()=>{
   },[])
   return(
     <Switch>
-      <Route exact path="/" >
-      <Home />
+      <Route exact path="/" component={Main}>
+     
       </Route>
-      <Route path="/signin">
-        <Signin />
+      <Route path="/signin" exact component={Signin}>
+       
       </Route>
-      <Route path="/signup">
-        <Signup />
+      <Route path="/studentlist"exact component={StudentList}/>
+       
+      
+      <Route path="/signup" exact component={Signup}>
+      
       </Route>
-      <Route exact path="/profile">
-        <Profile />
+      
+      <Route path="/student/:id" exact component={StudentTab}/>
+        
+  
+      <Route path="/create" component={CreatePost}>
+     
       </Route>
-      <Route path="/create">
-        <CreatePost/>
+      <Route path="/profile/:userid" component={UserProfile}>
+     
       </Route>
-      <Route path="/profile/:userid">
-        <UserProfile />
+     
+      <Route exact path="/reset" component={Reset}>
+ 
       </Route>
-      <Route path="/myfollowingpost">
-        <SubscribedUserPosts />
-      </Route>
-      <Route exact path="/reset">
-        <Reset/>
-      </Route>
-      <Route path="/reset/:token">
-        <NewPassword />
+      <Route path="/reset/:token" exact component={NewPassword}>
       </Route>
       
     </Switch>
@@ -66,9 +70,24 @@ function App() {
   return (
     <UserContext.Provider value={{state,dispatch}}>
     <BrowserRouter>
-      <NavBar />
+    <div id="pcoded" className="pcoded">
+          <div className="pcoded-overlay-box" />
+          <div className="pcoded-container navbar-wrapper">
+          <NavBar />
+            <div className="pcoded-main-container">
+              <div className="pcoded-wrapper">
+                {state?
+                  <SideBar />
+                :""}
+                  <div className="pcoded-content">
+                 <div className="pcoded-inner-content">
       <Routing />
-      
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
     </BrowserRouter>
     </UserContext.Provider>
   );

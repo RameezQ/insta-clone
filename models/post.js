@@ -1,11 +1,19 @@
 const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
-    title:{
+    name:{
         type:String,
         required:true
     },
-    body:{
+    fatherName:{
+        type:String,
+        required:true
+    },
+    address:{
+        type:String,
+        required:true
+    },
+    cell:{
         type:String,
         required:true
     },
