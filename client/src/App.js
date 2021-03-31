@@ -1,20 +1,19 @@
 import React,{useEffect,createContext,useReducer,useContext} from 'react';
 import NavBar from './components/Navbar'
 import "./App.css"
-import {BrowserRouter,Route,Switch,useHistory} from 'react-router-dom'
+import {BrowserRouter,Link,Route,Switch,useHistory} from 'react-router-dom'
 import Home from './components/screens/Home'
 import Signin from './components/screens/SignIn'
 
 import Signup from './components/screens/Signup'
-import CreatePost from './components/screens/CreatePost'
+import AddStudent from './components/screens/AddStudtent'
 import {reducer,initialState} from './reducers/userReducer'
 import UserProfile from './components/screens/UserProfile'
 import Reset from './components/screens/Reset'
 import NewPassword from './components/screens/Newpassword'
 import SideBar from './components/DashBoard/SideBar';
-import Main from './components/DashBoard/Main';
-import StudentList from './components/StudentList';
-import StudentTab from './components/StudentTab';
+import StudentList from './components/DashBoard/StudentList';
+import StudentProfile from './components/DashBoard/StudentProfile';
 export const UserContext = createContext()
 
 
@@ -32,34 +31,22 @@ const Routing = ()=>{
   },[])
   return(
     <Switch>
-      <Route exact path="/" component={Main}>
+      <Route exact path="/" component={Home}/>
+   
+      <Route path="/signin"component={Signin}/>
+      <Route path="/signup" component={Signup}/>
+       
      
-      </Route>
-      <Route path="/signin" exact component={Signin}>
+      <Route path="/addstudent" exact component={AddStudent}/>
+      <Route exact path="/studentlist"component={StudentList}/>
+      <Route path="/profile/:userid" component={UserProfile}/>
+      <Route exact path="/student/profile/:id" component={StudentProfile}/>
+      
+     
+      <Route exact path="/reset" component={Reset}/>
        
-      </Route>
-      <Route path="/studentlist"exact component={StudentList}/>
-       
-      
-      <Route path="/signup" exact component={Signup}>
-      
-      </Route>
-      
-      <Route path="/student/:id" exact component={StudentTab}/>
+      <Route path="/reset/:token"component={NewPassword}/>
         
-  
-      <Route path="/create" component={CreatePost}>
-     
-      </Route>
-      <Route path="/profile/:userid" component={UserProfile}>
-     
-      </Route>
-     
-      <Route exact path="/reset" component={Reset}>
- 
-      </Route>
-      <Route path="/reset/:token" exact component={NewPassword}>
-      </Route>
       
     </Switch>
   )
@@ -70,23 +57,31 @@ function App() {
   return (
     <UserContext.Provider value={{state,dispatch}}>
     <BrowserRouter>
-    <div id="pcoded" className="pcoded">
-          <div className="pcoded-overlay-box" />
-          <div className="pcoded-container navbar-wrapper">
-          <NavBar />
-            <div className="pcoded-main-container">
-              <div className="pcoded-wrapper">
-                {state?
-                  <SideBar />
-                :""}
-                  <div className="pcoded-content">
-                 <div className="pcoded-inner-content">
-      <Routing />
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
+      <NavBar />
+      <div className="container-fluid">
+          <div className="row">
+            {state &&  <SideBar/>}
+     
+      <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {state &&
+              <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 className="h2">Dashboard</h1>
+                <div className="btn-toolbar mb-2 mb-md-0">
+                  <div className="btn-group me-2">
+                    <button type="button" className="btn btn-sm btn-outline-secondary">Share</button>
+                    <button type="button" className="btn btn-sm btn-outline-secondary">Export</button>
+                    <Link type="button" to='/create' className="btn btn-sm btn-outline-secondary">create</Link>
+                  </div>
+                  <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle">
+                    <span data-feather="calendar" />
+                    This week
+                  </button>
+                </div>
+              </div>
+}
+              <Routing />
+              </main>
+    </div>
       </div>
     </BrowserRouter>
     </UserContext.Provider>

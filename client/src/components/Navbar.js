@@ -8,7 +8,37 @@ const NavBar = ()=>{
     const [userDetails,setUserDetails] = useState([])
      const {state,dispatch} = useContext(UserContext)
      const history = useHistory()
-    
+     useEffect(()=>{
+         M.Modal.init(searchModal.current)
+     },[])
+     const renderList = ()=>{
+       if(state){
+           return [
+            // <li key="1"><i  data-target="modal1" className="large material-icons modal-trigger" style={{color:"black"}}>search</i></li>,
+            // <li key="2"><Link to="/profile">Profile</Link></li>,
+            // <li key="3"><Link to="/create">Create New Product</Link></li>,
+            
+            <li  key="5">
+             <button className="btn btn-primary"
+            onClick={()=>{
+              localStorage.clear()
+              dispatch({type:"CLEAR"})
+              history.push('/signin')
+            }}
+            >
+                Logout
+            </button>
+            </li>
+         
+            
+           ]
+       }else{
+         return [
+          <button  key="6" className="btn" ><Link to="/signin" style={{color:"white"}}>Signin</Link></button>, 
+         ]
+       }
+     }
+
 
      const fetchUsers = (query)=>{
         setSearch(query)
@@ -26,125 +56,6 @@ const NavBar = ()=>{
         })
      }
     return(
-      <nav className="navbar header-navbar pcoded-header">
-              <div className="navbar-wrapper">
-                <div className="navbar-logo">
-                  <Link className="mobile-menu" id="mobile-collapse" to="#!">
-                    <i className="ti-menu" />
-                  </Link>
-                  <Link className="mobile-search morphsearch-search" to="#">
-                    <i className="ti-search" />
-                  </Link>
-                  <Link to="index.html">
-                    {/* <img className="img-fluid" src="assets/images/logo.png" alt="Theme-Logo" /> */}
-                  </Link>
-                  <Link to="" className="mobile-options">
-                    <i className="ti-more" />
-                  </Link>
-                </div>
-                <div className="navbar-container container-fluid">
-                  <ul className="nav-left">
-                    <li>
-                      <div className="sidebar_toggle"><Link to="/" onClick={(e)=>e.preventDefault()}><i className="ti-menu" /></Link></div>
-                    </li>
-                    <li>
-                      <Link to="#!" onClick="javascript:toggleFullScreen()">
-                        <i className="ti-fullscreen" />
-                      </Link>
-                    </li>
-                  </ul>
-                  <ul className="nav-right">
-                    <li className="header-notification">
-                      <Link to="#!">
-                        <i className="ti-bell" />
-                        <span className="badge bg-c-pink" />
-                      </Link>
-                      <ul className="show-notification">
-                        <li>
-                          <h6>Notifications</h6>
-                          <label className="label label-danger">New</label>
-                        </li>
-                        <li>
-                          
-                          <div className="media">
-                            <img className="d-flex align-self-center img-radius" src="assets/images/avatar-4.jpg" alt="Generic placeholder image" />
-                            <div className="media-body">
-                              <h5 className="notification-user">John Doe</h5>
-                              <p className="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                              <span className="notification-time">30 minutes ago</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="media">
-                            <img className="d-flex align-self-center img-radius" src="assets/images/avatar-3.jpg" alt="Generic placeholder image" />
-                            <div className="media-body">
-                              <h5 className="notification-user">Joseph William</h5>
-                              <p className="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                              <span className="notification-time">30 minutes ago</span>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="media">
-                            <img className="d-flex align-self-center img-radius" src="assets/images/avatar-4.jpg" alt="Generic placeholder image" />
-                            <div className="media-body">
-                              <h5 className="notification-user">Sara Soudein</h5>
-                              <p className="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                              <span className="notification-time">30 minutes ago</span>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </li>
-
-                    <li className="user-profile header-notification">
-                      {state?
-                      <Link to="#!">
-                        {/* <img src="assets/images/avatar-4.jpg" className="img-radius" alt="User-Profile-Image" /> */}
-                        <span>{state.name}</span>
-                        <i className="ti-angle-down" />
-                      </Link>:""}
-                      <ul className="show-notification profile-notification">
-                        <li>
-                          <Link to="#!">
-                            <i className="ti-settings" /> Settings
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#">
-                            <i className="ti-user" /> Profile
-                          </Link>
-                        </li>
-                        {/* <li>
-                          <Link to="#">
-                            <i className="ti-email" /> My Messages
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#">
-                            <i className="ti-lock" /> Lock Screen
-                          </Link>
-                        </li> */}
-                        <li>
-                          <button 
-                           onClick={()=>{
-                            localStorage.clear()
-                            dispatch({type:"CLEAR"})
-                            history.push('/signin')
-                          }}
-                          >
-                            <i className="ti-layout-sidebar-left" 
-                            
-                            /> Logout
-                          </button>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
       //   <nav>
       //   <div className="nav-wrapper white">
       //     <Link to={state?"/":"/signin"} className="brand-logo left">SanPak</Link>
@@ -176,6 +87,19 @@ const NavBar = ()=>{
       //     </div>
       //   </div>
       // </nav>
+      <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+          <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
+          <button className="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon" />
+          </button>
+          <input className="form-control form-control-dark w-50" type="text" placeholder="Search" aria-label="Search" />
+          <ul className="navbar-nav px-3">
+           
+            
+              <span className="nav" > {renderList()}</span>
+            
+          </ul>
+        </header>
     )
 }
 

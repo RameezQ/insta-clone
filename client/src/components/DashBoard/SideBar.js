@@ -1,89 +1,82 @@
 import React from 'react'
-import { useContext } from 'react'
-import {Link ,useHistory} from 'react-router-dom'
-import { UserContext } from '../../App'
-
+import { Link } from 'react-router-dom'
+import './Dashboard.css'
 const SideBar = () => {
-    const history =useHistory()
-    const {state,dispatch} = useContext(UserContext)
     return (
-        <nav className="pcoded-navbar">
-        <div className="sidebar_toggle"><Link to="#"><i className="icon-close icons" /></Link></div>
-        <div className="pcoded-inner-navbar main-menu">
-          <div className>
-            <div className="main-menu-header">
-              {/* <img className="img-40 img-radius" src="assets/images/avatar-4.jpg" alt="User-Profile-Image" /> */}
-              <div className="user-details">
-                <span>{state?state.name:""}</span>
-                <span id="more-details"><i className="ti-angle-down" /></span>
-              </div>
-            </div>
-            <div className="main-menu-content">
-              <ul>
-                <li className="more-details">
-                  <Link to="#"><i className="ti-user" />View Profile</Link>
-                  <Link to="#!"><i className="ti-settings" />Settings</Link>
-                  <button  onClick={()=>{
-                    localStorage.clear()
-                    dispatch({type:"CLEAR"})
-                    history.push('/signin')
-                  }}><i className="ti-layout-sidebar-left"  
-                  
-                  />Logout</button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="pcoded-search">
-            <span className="searchbar-toggle"></span>
-            <div className="pcoded-search-box ">
-              <input type="text" placeholder="Search" />
-              <span className="search-icon"><i className="ti-search" aria-hidden="true" /></span>
-            </div>
-          </div>
-          <div className="pcoded-navigatio-lavel" data-i18n="nav.category.navigation">Layout</div>
-          <ul className="pcoded-item pcoded-left-item">
-            <li className="active">
-              <Link to="index.html">
-                <span className="pcoded-micon"><i className="ti-home" /><b>D</b></span>
-                <span className="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
-               
+        <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div className="position-sticky pt-3">
+          <ul className="nav flex-column">
+            <li className="nav-item">
+              <Link className="nav-link active" aria-current="page" to="/studentlist">
+                <span data-feather="home" />
+                Dashboard
               </Link>
             </li>
-            <li className="pcoded-hasmenu">
-              <Link to='/' onClick={(e)=>e.preventDefault()} >
-                <span className="pcoded-micon"><i className="ti-layout-grid2-alt" /></span>
-                <span className="pcoded-mtext" data-i18n="nav.basic-components.main">Students</span>
-               
+            <li className="nav-item">
+              <Link className="nav-link" to="/teacher">
+                <span data-feather="file" />
+                Teachers
               </Link>
-              <ul className="pcoded-submenu">
-                <li className=" ">
-                  <Link to="/create">
-                    <span className="pcoded-micon"><i className="ti-angle-right" /></span>
-                    <span className="pcoded-mtext" data-i18n="nav.basic-components.alert">New Admission </span>
-                  </Link>
-                </li>
-                <li className=" ">
-                  <Link to="/studentlist">
-                    <span className="pcoded-micon"><i className="ti-angle-right" /></span>
-                    <span className="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Student List</span>
-                   
-                  </Link>
-                </li>
-               
-                
-              </ul>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/studentlist">
+                <span data-feather="shopping-cart" />
+                Students
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                <span data-feather="users" />
+                Classes
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                <span data-feather="bar-chart-2" />
+                course
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                <span data-feather="layers" />
+                Integrations
+              </Link>
             </li>
           </ul>
-         
-          
-         
-         
+          <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Saved reports</span>
+            <Link className="link-secondary" to="#" aria-label="Add a new report">
+              <span data-feather="plus-circle" />
+            </Link>
+          </h6>
+          <ul className="nav flex-column mb-2">
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                <span data-feather="file-text" />
+                Current month
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                <span data-feather="file-text" />
+                Last quarter
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                <span data-feather="file-text" />
+                Social engagement
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="#">
+                <span data-feather="file-text" />
+                Year-end sale
+              </Link>
+            </li>
+          </ul>
         </div>
-        </nav>
-           
-       
-        
+      </nav>
     )
 }
 
