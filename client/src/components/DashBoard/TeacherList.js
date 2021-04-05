@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { MDBDataTable } from 'mdbreact'
 import { Fragment } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-const StudentList = (props) => {
+const TeacherList = (props) => {
     const history = useHistory()
     const [datas, setData] = useState({products:[""]})
     useEffect((keyword = '', currentPage = 1)=>{
-        let link = `/allproducts?keyword=${keyword}&page=${currentPage}`
+        let link = `/allTeachers?keyword=${keyword}&page=${currentPage}`
         fetch(link,{
             headers:{
                 "Authorization":"Bearer "+localStorage.getItem("jwt")
@@ -19,7 +19,7 @@ const StudentList = (props) => {
      },[])
 
 const deleteProductHandler=(postid)=>{
-    fetch(`/deletepost/${postid}`,{
+    fetch(`/teacher/${postid}`,{
         method:"delete",
         headers:{
             Authorization:"Bearer "+localStorage.getItem("jwt")
@@ -27,10 +27,10 @@ const deleteProductHandler=(postid)=>{
     }).then(res=>res.json())
     .then(result=>{
         console.log(result)
-        // const newData = datas.filter(item=>{
-        //     return item._id !== result._id
-        // })
-        // setData([...newData])
+        const newData = datas.filter(item=>{
+            return item._id !== result._id
+        })
+        setData([...newData])
     })
     // history.push('/studentlist')
 }
@@ -40,8 +40,8 @@ const deleteProductHandler=(postid)=>{
         const data = {
             columns: [
                 {
-                    label: 'Roll NUmber',
-                    field: 'rollNumber',
+                    label: 'Teacher Id',
+                    field: 'teacherId',
                     sort: 'asc'
                 },
                 {
@@ -50,13 +50,13 @@ const deleteProductHandler=(postid)=>{
                     sort: 'asc'
                 },
                 {
-                    label: 'Father Name',
-                    field: 'fatherName',
+                    label: 'Classes ',
+                    field: 'classOfTeach',
                     sort: 'asc'
                 },
                 {
-                    label: 'Address',
-                    field: 'address',
+                    label: 'Subject',
+                    field: 'subject',
                     sort: 'asc'
                 },
                 {
@@ -65,13 +65,13 @@ const deleteProductHandler=(postid)=>{
                     sort: 'asc'
                 },
                 {
-                    label: 'Course',
-                    field: 'course',
+                    label: 'CNIC',
+                    field: 'idCard',
                     sort: 'asc'
                 },
                 {
-                    label: 'Class Name',
-                    field: 'inClass',
+                    label: 'Salary',
+                    field: 'salary',
                     sort: 'asc'
                 },
                 {
@@ -84,14 +84,15 @@ const deleteProductHandler=(postid)=>{
 
         datas.products.map(product => {
             data.rows.push({
-                rollNumber: <small><Link to={`/student/profile/${product._id}`}>{product.rollNumber}</Link></small>,
-                name:<small><Link to={`/student/profile/${product._id}`}>{product.name}</Link></small>,
-                fatherName:<small>{product.fatherName}</small>,
-                address: <small>{product.address}</small>,
+                teacherId: <small><Link to={`/teacher/profile/${product._id}`}>{product.teacherId}</Link></small>,
+                name:<small><Link to={`/teacher/profile/${product._id}`}>{product.name}</Link></small>,
+                className:<small>{product.classOfTeach}</small>,
+                subject: <small>{product.subject}</small>,
                 cell:<small>{product.cell}</small>, 
-                course: <small>{product.course}</small>,
+                idCard: <small>{product.idCard}</small>,
+                salary: <small>Rs.{product.salary}</small>,
                 actions: <Fragment>
-                    <Link to={`/student/profile/${product._id}`} className="btn btn-primary py-1 px-2">
+                    <Link to={`/teacher/profile/${product._id}`} className="btn btn-primary py-1 px-2">
                         <i className="fa fa-pencil"></i>
                     </Link>
                     <button className="btn btn-danger py-1 px-2 ml-2" 
@@ -110,7 +111,7 @@ const deleteProductHandler=(postid)=>{
 
     return (
         <Fragment>
-            <h5 ><Link className="btn btn-primary" to="/addstudent">New Addmission</Link></h5>
+            <h5 ><Link className="btn btn-primary" to="/addteacher">New Teacher</Link></h5>
             <div className="row">
 
                 <div className="col-12 col-md-12">
@@ -135,4 +136,4 @@ const deleteProductHandler=(postid)=>{
 
 
 
-export default StudentList
+export default TeacherList

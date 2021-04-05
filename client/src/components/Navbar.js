@@ -1,106 +1,126 @@
-import React,{useContext,useRef,useEffect,useState} from 'react'
-import {Link ,useHistory} from 'react-router-dom'
-import {UserContext} from '../App'
+import React, { useContext, useRef, useEffect, useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { UserContext } from '../App'
 import M from 'materialize-css'
-const NavBar = ()=>{
-    const  searchModal = useRef(null)
-    const [search,setSearch] = useState('')
-    const [userDetails,setUserDetails] = useState([])
-     const {state,dispatch} = useContext(UserContext)
-     const history = useHistory()
-     useEffect(()=>{
-         M.Modal.init(searchModal.current)
-     },[])
-     const renderList = ()=>{
-       if(state){
-           return [
-            // <li key="1"><i  data-target="modal1" className="large material-icons modal-trigger" style={{color:"black"}}>search</i></li>,
-            // <li key="2"><Link to="/profile">Profile</Link></li>,
-            // <li key="3"><Link to="/create">Create New Product</Link></li>,
-            
-            <li  key="5">
-             <button className="btn btn-primary"
-            onClick={()=>{
+import { Dropdown, DropdownButton } from 'react-bootstrap'
+const NavBar = () => {
+  const searchModal = useRef(null)
+  const [search, setSearch] = useState('')
+  const [userDetails, setUserDetails] = useState([])
+  const { state, dispatch } = useContext(UserContext)
+  const history = useHistory()
+  useEffect(() => {
+    M.Modal.init(searchModal.current)
+  }, [])
+  const renderList = () => {
+    if (state) {
+      return [
+        // <li key="1"><i  data-target="modal1" className="large material-icons modal-trigger" style={{color:"black"}}>search</i></li>,
+        // <li key="2"><Link to="/profile">Profile</Link></li>,
+        // <li key="3"><Link to="/create">Create New Product</Link></li>,
+
+        <li key="5">
+          <button className="btn btn-primary"
+            onClick={() => {
               localStorage.clear()
-              dispatch({type:"CLEAR"})
+              dispatch({ type: "CLEAR" })
               history.push('/signin')
             }}
-            >
-                Logout
+          >
+            Logout
             </button>
+        </li>
+
+
+      ]
+    } else {
+      return [
+        <Link to="/signin" style={{ color: "white" }}>Signin</Link>
+      ]
+    }
+  }
+
+
+  const fetchUsers = (query) => {
+    setSearch(query)
+    fetch('/search-users', {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query
+      })
+    }).then(res => res.json())
+      .then(results => {
+        setUserDetails(results.user)
+      })
+  }
+  return (
+    <nav className="navbar shadow navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
+      <div className="container-fluid">
+        <div className="navbar-wrapper">
+          <Link className="navbar-brand" to="/">{state ? state.name : "DashBoard"}</Link>
+        </div>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
+          <span className="sr-only">Toggle navigation</span>
+          <span className="navbar-toggler-icon icon-bar" />
+          <span className="navbar-toggler-icon icon-bar" />
+          <span className="navbar-toggler-icon icon-bar" />
+        </button>
+        <div className="collapse navbar-collapse justify-content-end">
+          {/* <form className="navbar-form">
+            <div className="input-group no-border">
+              <input type="text" defaultValue className="form-control" placeholder="Search..." />
+              <button type="submit" className="btn btn-default btn-round btn-just-icon">
+                <i className="material-icons">search</i>
+                <div className="ripple-container" />
+              </button>
+            </div>
+          </form> */}
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link className="nav-link" to="javascript:void(0)">
+                <i className="material-icons">dashboard</i>
+                <p className="d-lg-none d-md-block">
+                  Stats
+                </p>
+              </Link>
             </li>
-         
-            
-           ]
-       }else{
-         return [
-          <button  key="6" className="btn" ><Link to="/signin" style={{color:"white"}}>Signin</Link></button>, 
-         ]
-       }
-     }
+            <li className="nav-item dropdown">
+              <Link className="nav-link" to='' id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i className="material-icons">notifications</i>
+                <span className="notification">5</span>
+                <p className="d-lg-none d-md-block">
+                  Some Actions
+                </p>
+              </Link>
+              <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                <Link className="dropdown-item" to="javascript:void(0)">Mike John responded to your email</Link>
+                <Link className="dropdown-item" to="javascript:void(0)">You have 5 new tasks</Link>
+                <Link className="dropdown-item" to="javascript:void(0)">You're now friend with Andrew</Link>
+                <Link className="dropdown-item" to="javascript:void(0)">Another Notification</Link>
+                <Link className="dropdown-item" to="javascript:void(0)">Another One</Link>
+              </div>
+            </li>
+            <li className="nav-item">
+              <span className="nav-link" >
 
+                {state ?
+                  <button onClick={() => {
+                    localStorage.clear()
+                    dispatch({ type: "CLEAR" })
+                    history.push('/signin')
+                  }} className="btn btn-primary">Logout</button>
+                  : <Link to="/login" className="btn btn-primary">Login</Link>}
+              </span>
+            </li>
 
-     const fetchUsers = (query)=>{
-        setSearch(query)
-        fetch('/search-users',{
-          method:"post",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body:JSON.stringify({
-            query
-          })
-        }).then(res=>res.json())
-        .then(results=>{
-          setUserDetails(results.user)
-        })
-     }
-    return(
-      //   <nav>
-      //   <div className="nav-wrapper white">
-      //     <Link to={state?"/":"/signin"} className="brand-logo left">SanPak</Link>
-      //     <ul id="nav-mobile" className="right">
-      //        {renderList()}
-  
-      //     </ul>
-      //   </div>
-      //   <div id="modal1" class="modal" ref={searchModal} style={{color:"black"}}>
-      //     <div className="modal-content">
-      //     <input
-      //       type="text"
-      //       placeholder="search users"
-      //       value={search}
-      //       onChange={(e)=>fetchUsers(e.target.value)}
-      //       />
-      //        <ul className="collection">
-      //          {userDetails.map(item=>{
-      //            return <Link to={item._id !== state._id ? "/profile/"+item._id:'/profile'} onClick={()=>{
-      //              M.Modal.getInstance(searchModal.current).close()
-      //              setSearch('')
-      //            }}><li className="collection-item">{item.email}</li></Link> 
-      //          })}
-               
-      //         </ul>
-      //     </div>
-      //     <div className="modal-footer">
-      //       <button className="modal-close waves-effect waves-green btn-flat" onClick={()=>setSearch('')}>close</button>
-      //     </div>
-      //   </div>
-      // </nav>
-      <header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-          <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
-          <button className="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon" />
-          </button>
-          <input className="form-control form-control-dark w-50" type="text" placeholder="Search" aria-label="Search" />
-          <ul className="navbar-nav px-3">
-           
-            
-              <span className="nav" > {renderList()}</span>
-            
           </ul>
-        </header>
-    )
+        </div>
+      </div>
+    </nav>
+  )
 }
 
 

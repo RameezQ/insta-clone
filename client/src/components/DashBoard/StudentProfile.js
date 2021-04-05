@@ -1,11 +1,22 @@
 import { Tab, Tabs } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-
-const StudentProfile = () => {
-    const [data, setData] = useState({})
+import Loader from '../Loader'
+import axios  from 'axios';
+import { Form } from "react-bootstrap";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const StudentProfile = (props) => {
+    const initialState = {
+        name: "", fatherName: "", cell: "", inClass: "", course: "", rollNumber: "", address: "", photo: ""
+    }
+    const [article, setArticle] = useState(initialState)
+    const [loading, setLoading] = useState(false)
+    const { name, fatherName, rollNumber, cell, course, inClass, address } = article
     const { id } = useParams()
-    console.log(id)
+    const [image, setImage] = useState('')
+    const [url, setUrl] = useState("")
+
     useEffect(() => {
         fetch(`/student/profile/${id}`, {
             headers: {
@@ -14,23 +25,88 @@ const StudentProfile = () => {
         }).then(res => res.json())
             .then(result => {
                 console.log(result)
-                setData(result)
+                setArticle(result)
             })
     }, [])
-    console.log(data)
+    function handleChange(event) {
+        setArticle({ ...article, [event.target.name]: event.target.value })
+    }
+
+
+    const uploadFileHandler = async (e) => {
+        const file = e.target.files[0];
+        const data = new FormData();
+        data.append('file', file);
+        data.append("upload_preset", "sanpak")
+        data.append("cloud_name", "rameezqamar")
+        setLoading(true);
+
+        fetch("https://api.cloudinary.com/v1_1/rameezqamar/image/upload", {
+            method: "post",
+            body: data
+        })
+            .then(res => res.json())
+            .then(data => {
+                setUrl(data.url)
+                
+                setLoading(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
+    };
+    function handleSubmit(event) {
+        event.preventDefault();
+        article.photo = url?url:article.photo
+        if ( !article.name || !article.fatherName || !article.cell || !article.inClass || !article.course || !article.rollNumber || !article.address
+        ) return
+        async function postArticle() {
+
+            try {
+                const response = await axios.put(`/student/${id}`, article, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("jwt")
+                    }
+                });
+                toast.info('🦄Student Recored update sccuessfully!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+             setArticle(response.data)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        postArticle();
+        //  props.history.push(`/studentlist`);
+    }
+
+    function handleCancel() {
+        props.history.push("/studentlist")
+    }
+
     return (
         <>
             <div className="container bootstrap snippet">
                 <div className="row">
-                    <div className="col-sm-10"><h3>{data.name}</h3></div>
+                    <div className="col-sm-10"><h3>{article.name}</h3></div>
                     {/* <div className="col-sm-2"><a href="/users" className="pull-right"><img title="profile image" className="img-circle img-responsive" src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100" /></a></div> */}
                 </div>
                 <div className="row">
                     <div className="col-sm-3">{/*left col*/}
                         <div className="text-center">
-                            <img src={data.photo} className="avatar img-circle img-thumbnail" alt="avatar" />
+                            <img src={url?url:article.photo} className="avatar img-circle img-thumbnail" alt="avatar" />
                             <h6>Upload a different photo...</h6>
-                            <input type="file" className="text-center center-block file-upload" />
+                            <input type="file" className="text-center center-block file-upload" onChange={uploadFileHandler} />
+                            {loading && <Loader />}
                         </div><br />
                        
                         <ul className="list-group">
@@ -48,72 +124,78 @@ const StudentProfile = () => {
                         </div>
                     </div>{/*/col-3*/}
                     <div className="col-sm-9">
-                        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+                        <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
                             <Tab eventKey="home" title="Home">
-                                <form className="form" action="##" method="post" id="registrationForm">
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="first_name"><h4>First name</h4></label>
-                                            <input type="text" className="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any."
-                                                value={data.name}
-                                            />
-                                        </div>
+                                <div className="container shadow">
+
+                                    <ToastContainer
+                                        position="top-right"
+                                        autoClose={5000}
+                                        hideProgressBar={false}
+                                        newestOnTop={false}
+                                        closeOnClick
+                                        rtl={false}
+                                        pauseOnFocusLoss
+                                        draggable
+                                        pauseOnHover
+                                    />
+                                    {/* Same as */}
+                                    <ToastContainer />
+                                    <h4 className="text-center pt-1">Update Student Record</h4>
+                                    <hr />
+                                    <div className="col-md-7 col-lg-11">
+                                        <form onSubmit={handleSubmit}>
+                                            <div class="row g-4">
+                                                <div className="col-sm-6 form-group">
+                                                    <label>Name</label>
+                                                    <input name="name" type="text" value={article.name} onChange={handleChange} className="form-control" required />
+                                                </div>
+
+                                                <div className="col-sm-6 form-group">
+                                                    <label>Roll Number</label>
+                                                    <input name="rollNumber" type="number" value={article.rollNumber} onChange={handleChange} className="form-control" required />
+
+                                                </div>
+
+                                                <div className="col-sm-6 form-group">
+                                                    <label>Father Name</label>
+                                                    <input name="fatherName" type="text" value={article.fatherName} onChange={handleChange} className="form-control" required />
+                                                </div>
+                                                <div className="col-sm-6 form-group">
+                                                    <label>Address</label>
+                                                    <input name="address" type="text" value={article.address} onChange={handleChange} className="form-control" required />
+                                                </div>
+
+
+                                                <div className="col-sm-6 form-group">
+                                                    <label>cell</label>
+                                                    <input name="cell" type="text" value={article.cell} onChange={handleChange} className="form-control" required />
+                                                </div>
+                                                <div className="col-sm-6 form-group">
+                                                    <label>Course</label>
+                                                    <input name="course" type="text" value={article.course} onChange={handleChange} className="form-control" required />
+                                                </div>
+
+
+                                                <div className="col-sm-6 form-group">
+                                                    <label>Class Name</label>
+                                                    <input name="inClass" value={article.inClass} onChange={handleChange} className="form-control" required />
+                                                </div>
+
+                                               
+                                            </div>
+                                            <div className="btn-group float-right">
+                                                <input type="submit" value="Submit" className="btn btn-primary " />
+                                            </div>
+                                            <button type="button" onClick={handleCancel} className="btn btn-secondary mb-5">Cancel</button>
+                                        </form>
                                     </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="last_name"><h4>Father  name</h4></label>
-                                            <input type="text" className="form-control" name="last_name" value={data.fatherName} id="last_name" placeholder="last name" title="enter your last name if any." />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="phone"><h4>Phone</h4></label>
-                                            <input type="text" className="form-control" name="phone" id="phone" value={data.cell} placeholder="enter phone" title="enter your phone number if any." />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="mobile"><h4>Address</h4></label>
-                                            <input type="text" className="form-control" name="mobile" value={data.address} id="mobile" placeholder="enter address" title="enter your mobile number if any." />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="email"><h4>Course</h4></label>
-                                            <input type="email" className="form-control" name="email" value={data.course} id="email" placeholder="you@email.com" title="enter your email." />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="email"><h4>Location</h4></label>
-                                            <input type="email" className="form-control" id="location" placeholder="somewhere" title="enter a location" />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="password"><h4>Password</h4></label>
-                                            <input type="password" className="form-control" name="password" id="password" placeholder="password" title="enter your password." />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-6">
-                                            <label htmlFor="password2"><h4>Verify</h4></label>
-                                            <input type="password" className="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2." />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <div className="col-xs-12">
-                                            <br />
-                                            <button className="btn btn-lg btn-success" type="submit"><i className="glyphicon glyphicon-ok-sign" /> Save</button>
-                                            <button className="btn btn-lg" type="reset"><i className="glyphicon glyphicon-repeat" /> Reset</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </Tab>
-                            <Tab eventKey="profile" title="Profile">
+                            <Tab eventKey="course" title="Course">
                                 {/* <Sonnet /> */}
                             </Tab>
-                            <Tab eventKey="contact" title="Contact" disabled>
+                            <Tab eventKey="marks" title="Marks" >
                                 {/* <Sonnet /> */}
                             </Tab>
                         </Tabs>

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const {ObjectId} = mongoose.Schema.Types
-const postSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
     name:{
         type:String,
         required:true
@@ -14,21 +14,33 @@ const postSchema = new mongoose.Schema({
         required:true
     },
     cell:{
-        type:String,
+        type:Number,
         required:true
     },
-    course:{
+    teacherId:{
+type:Number
+    },
+    subject:{
         type:String
     },
-    class:{
-      type:String
-    },
+    classOfTeach:{
+     type:String
+},
     
     photo:{
         type:String,
         required:true
     },
     idCard:{
+        type:Number
+    },
+    education:{
+   type:String
+},
+    salary:{
+        type:Number
+    },
+    reference:{
         type:String
     },
     postedBy:{
@@ -37,4 +49,4 @@ const postSchema = new mongoose.Schema({
     }
 },{timestamps:true})
 
-mongoose.model("Teachers",postSchema)
+mongoose.model("Teachers",teacherSchema)

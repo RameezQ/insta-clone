@@ -30,14 +30,14 @@ const postSchema = new mongoose.Schema({
         required:true
     },
     rollNumber:{
-        type:String,
+        type:Number,
         required:true
     },
-    likes:[{type:ObjectId,ref:"User"}],
-    comments:[{
-        text:String,
-        postedBy:{type:ObjectId,ref:"User"}
-    }],
+    // likes:[{type:ObjectId,ref:"User"}],
+    // comments:[{
+    //     text:String,
+    //     postedBy:{type:ObjectId,ref:"User"}
+    // }],
     postedBy:{
        type:ObjectId,
        ref:"User"

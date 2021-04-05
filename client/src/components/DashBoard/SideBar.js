@@ -3,80 +3,68 @@ import { Link } from 'react-router-dom'
 import './Dashboard.css'
 const SideBar = () => {
     return (
-        <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-        <div className="position-sticky pt-3">
-          <ul className="nav flex-column">
-            <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/studentlist">
-                <span data-feather="home" />
-                Dashboard
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/teacher">
-                <span data-feather="file" />
-                Teachers
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/studentlist">
-                <span data-feather="shopping-cart" />
-                Students
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="#">
-                <span data-feather="users" />
-                Classes
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="#">
-                <span data-feather="bar-chart-2" />
-                course
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="#">
-                <span data-feather="layers" />
-                Integrations
-              </Link>
-            </li>
-          </ul>
-          <h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>Saved reports</span>
-            <Link className="link-secondary" to="#" aria-label="Add a new report">
-              <span data-feather="plus-circle" />
+      <div className="sidebar" data-color="purple" data-background-color="" data-image="">
+      {/*
+      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+      Tip 2: you can also add an image using data-image tag
+  */}
+      <div className="logo"><Link to="/" className="simple-text logo-normal">
+          RQ Developer
+        </Link></div>
+      <div className="sidebar-wrapper">
+        <ul className="nav">
+          <li className="nav-item active  ">
+            <Link className="nav-link" to="/">
+              <i className="material-icons">dashboard</i>
+              <p>Dashboard</p>
             </Link>
-          </h6>
-          <ul className="nav flex-column mb-2">
-            <li className="nav-item">
-              <Link className="nav-link" to="#">
-                <span data-feather="file-text" />
-                Current month
+          </li>
+          <li className="nav-item ">
+            <Link className="nav-link" to="/teacherlist">
+              <i className="material-icons">Teachers</i>
+              <p>Teachers</p>
+            </Link>
+          </li>
+          <li className="nav-item ">
+            <Link className="nav-link" to="/studentlist">
+              <i className="material-icons">content_paste</i>
+              <p>Students</p>
+            </Link>
+          </li>
+          <li className="nav-item ">
+            <Link className="nav-link" to="./marksheet">
+              <i className="material-icons">library_books</i>
+              <p>Marks Sheet</p>
+            </Link>
+          </li>
+          <li className="nav-item ">
+            <Link className="nav-link" to="./icons.html">
+              <i className="material-icons">bubble_chart</i>
+              <p>Icons</p>
+            </Link>
+          </li>
+          <li className="nav-item ">
+            <Link className="nav-link" to="./map.html">
+              <i className="material-icons">location_ons</i>
+              <p>Maps</p>
+            </Link>
+          </li>
+          <li className="nav-item ">
+            <Link className="nav-link" to="./notifications.html">
+              <i className="material-icons">notifications</i>
+              <p>Notifications</p>
+            </Link>
+          </li>
+          {/* <li class="nav-item active-pro ">
+              <Link class="nav-link" to="./upgrade.html">
+                  <i class="material-icons">unarchive</i>
+                  <p>Upgrade to PRO</p>
               </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="#">
-                <span data-feather="file-text" />
-                Last quarter
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="#">
-                <span data-feather="file-text" />
-                Social engagement
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="#">
-                <span data-feather="file-text" />
-                Year-end sale
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+          </li> */}
+        </ul>
+      </div>
+    </div>
     )
 }
 
