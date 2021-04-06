@@ -40,7 +40,7 @@ const SideBar = () => {
           </li>
           <li className="nav-item ">
             <Link className="nav-link" to="/student/fee">
-              <i className="material-icons">bubble_chart</i>
+              <i className="material-icons">account_balance</i>
               <p>Fee</p>
             </Link>
           </li>
