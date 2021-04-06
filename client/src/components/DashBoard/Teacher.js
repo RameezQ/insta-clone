@@ -169,7 +169,7 @@ function Teacher(props) {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label className="bmd-label-floating">Address</label>
-                        <input name="classOfTeach" value={article.address} onChange={handleChange} className="form-control" required />
+                        <input name="address" value={article.address} onChange={handleChange} className="form-control" required />
                       </div>
                     </div>
                   </div>

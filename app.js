@@ -22,12 +22,15 @@ require('./models/user')
 require('./models/Student')
 require('./models/Teacher')
 require('./models/MarksSheet')
+require('./models/Fee')
 app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(require('./routes/Student'))
 app.use(require('./routes/user'))
 app.use(require('./routes/Teacher'))
 app.use(require('./routes/MarkSheets'))
+app.use(require('./routes/Fee'))
+
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 if(process.env.NODE_ENV=="production"){

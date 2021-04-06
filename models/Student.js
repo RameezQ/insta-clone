@@ -29,6 +29,24 @@ const postSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    fees:[{
+        month:{
+            type:String,
+            default:""
+        },
+        fee:{
+            type:Number,
+            default:0
+        },
+        remaining:{
+            type:Number,
+            default:false
+        },
+        status:{
+            type:String,
+            default:false
+        }
+    }],
     rollNumber:{
         type:Number,
         required:true

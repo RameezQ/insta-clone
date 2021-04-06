@@ -1,17 +1,31 @@
 const express = require ('express'); 
 const router = express.Router(); 
 const mongoose = require('mongoose')
-const Article = mongoose.model('MarkSheets'); 
+const Article = mongoose.model('Fee'); 
 const APIFeatures = require('../utils/APIFeatures')
 const requireLogin  = require('../middleware/requireLogin')
-router.get('/teachers', function(req, res) { 
-  Article.find(function(err, teachers) {
-    res.json(teachers);
+router.get('/fees', function(req, res) { 
+  Article.find(function(err, fees) {
+    res.json(fees);
   });
 });
-
-router.get('/teacher/:id', function(req, res) {  
-  Article.findById(req.params.id, function(err, article) {
+router.get('/feee', function(req, res) { 
+  
+    res.json("this is working");
+  
+});
+router.get('/fee/:id', function(req, res) {  
+  Article.findOne({studentId:req.params.id}, function(err, article) {
+    if (!article) {
+      res.status(404).send('No result found');
+    } else {
+      res.json(article);
+    }
+  });
+});
+router.put('/feeObjectId/:id', function(req, res) {  
+  console.log(req.body)
+  Article.findByIdAndUpdate(req.params.id,{$push : {fee : req.body.fee}}, function(err, article) {
     if (!article) {
       res.status(404).send('No result found');
     } else {
@@ -20,12 +34,9 @@ router.get('/teacher/:id', function(req, res) {
   });
 });
 
-router.post('/teacher',requireLogin, function(req, res) {   
-  // console.log(req.body)  
-  const {name,fatherName,idCard,salary,cell,address,reference,classOfTeach,subject,photo,teacherId,education} = req.body
-  let article = new Article({
-    name,fatherName,idCard,salary,cell,address,reference,classOfTeach,subject,photo,postedBy:req.user,teacherId,education
-  });
+router.post('/fee',requireLogin, function(req, res) {   
+  console.log(req.body)
+  let article = new Article(req.body);
   console.log(article)
   article.save()
     .then(article => {
@@ -35,20 +46,9 @@ router.post('/teacher',requireLogin, function(req, res) {
       res.status(422).send('Article add failed');
     });
 });
-router.post('/marksheet', function(req, res) {   
-    console.log(req.body.chemistryStatus)  
-    const article=new Article(req.body)
-    console.log(article)
-    article.save()
-      .then(article => {
-        res.send(article);
-      })
-      .catch(function(err) {
-        res.status(422).send('Article add failed');
-      });
-  });
-router.put('/teacher/:id', function(req, res){    
-  Article.findByIdAndUpdate(req.params.id, req.body)
+
+router.put('/fee/:Studebtid', function(req, res){    
+  Article.findByIdAndUpdate({_id:req.params.studendId}, req.body)
     .then(function() {
       res.json('Article updated');
     })
@@ -57,7 +57,7 @@ router.put('/teacher/:id', function(req, res){
     });
 });
 
-router.delete('/teacher/:id', function(req, res) {  
+router.delete('/fee/:id', function(req, res) {  
   Article.findById(req.params.id, function(err, article) {
     if (!article) {
       res.status(404).send('Article not found');
@@ -70,7 +70,7 @@ router.delete('/teacher/:id', function(req, res) {
     }
   });
 })
-router.get("/allTeachers",requireLogin,async (req, res, next) => {
+router.get("/allfees",requireLogin,async (req, res, next) => {
 
   const resPerPage = 4;
   const productsCount = await Article.countDocuments();

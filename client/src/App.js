@@ -18,6 +18,7 @@ import TeacherList from './components/DashBoard/TeacherList';
 import Teacher from './components/DashBoard/Teacher';
 import TeacherProfile from './components/DashBoard/TeacherProfile';
 import MarkSheet from './components/DashBoard/MarkSheet';
+import Fee from './components/DashBoard/Fee';
 
 export const UserContext = createContext()
 
@@ -49,6 +50,7 @@ const Routing = () => {
       <Route exact path="/marksheet" component={MarkSheet} />
       <Route exact path="/reset" component={Reset} />
       <Route path="/reset/:token" component={NewPassword} />
+      <Route path="/student/fee" component={Fee} />
     </Switch>
   )
 }

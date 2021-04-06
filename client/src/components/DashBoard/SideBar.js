@@ -33,15 +33,15 @@ const SideBar = () => {
             </Link>
           </li>
           <li className="nav-item ">
-            <Link className="nav-link" to="./marksheet">
+            <Link className="nav-link" to="/marksheet">
               <i className="material-icons">library_books</i>
               <p>Marks Sheet</p>
             </Link>
           </li>
           <li className="nav-item ">
-            <Link className="nav-link" to="./icons.html">
+            <Link className="nav-link" to="/student/fee">
               <i className="material-icons">bubble_chart</i>
-              <p>Icons</p>
+              <p>Fee</p>
             </Link>
           </li>
           <li className="nav-item ">
