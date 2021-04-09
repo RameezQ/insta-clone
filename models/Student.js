@@ -29,33 +29,32 @@ const postSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    fees:[{
+   
+    rollNumber:{
+        type:Number,
+        required:true
+    },
+    fee:[{
         month:{
             type:String,
             default:""
         },
-        fee:{
+        paid:{
             type:Number,
             default:0
         },
         remaining:{
             type:Number,
-            default:false
+            default:0
         },
         status:{
             type:String,
             default:false
+        },
+        totalFee:{
+            type:Number
         }
     }],
-    rollNumber:{
-        type:Number,
-        required:true
-    },
-    // likes:[{type:ObjectId,ref:"User"}],
-    // comments:[{
-    //     text:String,
-    //     postedBy:{type:ObjectId,ref:"User"}
-    // }],
     postedBy:{
        type:ObjectId,
        ref:"User"

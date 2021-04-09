@@ -7,7 +7,8 @@ const requireLogin  = require('../middleware/requireLogin')
 router.get('/fees', function(req, res) { 
   Article.find(function(err, fees) {
     res.json(fees);
-  });
+  }).populate("studentId","_id name")
+    .sort('-createdAt')
 });
 router.get('/feee', function(req, res) { 
   
@@ -21,7 +22,7 @@ router.get('/fee/:id', function(req, res) {
     } else {
       res.json(article);
     }
-  });
+  }).populate("studentId","_id name");
 });
 router.put('/feeObjectId/:id', function(req, res) {  
   console.log(req.body)

@@ -17,7 +17,16 @@ router.get('/allpost',requireLogin,(req,res)=>{
     })
     
 })
-
+router.put('/feeObjectId/:id', function(req, res) {  
+    console.log(req.body)
+    Post.findByIdAndUpdate(req.params.id,{$push : {fee : req.body.fee}}, function(err, article) {
+      if (!article) {
+        res.status(404).send('No result found');
+      } else {
+        res.json(article);
+      }
+    });
+  });
 router.get('/getsubpost',requireLogin,(req,res)=>{
 
     // if postedBy in following
@@ -89,7 +98,7 @@ router.put('/student/:id', function(req, res){
         res.status(422).send("Article update failed.");
       });
   });
-
+ 
 router.get('/mypost',requireLogin,(req,res)=>{
     Post.find({postedBy:req.user._id})
     .populate("PostedBy","_id name")
@@ -100,6 +109,15 @@ router.get('/mypost',requireLogin,(req,res)=>{
         console.log(err)
     })
 })
+router.get('/articles/:id', function(req, res) {  
+    Post.findById(req.params.id, function(err, article) {
+      if (!article) {
+        res.status(404).send('No result found');
+      } else {
+        res.json(article);
+      }
+    });
+  });
 router.get('/student/profile/:id',requireLogin, function(req, res) {  
     console.log(req.body)
     Post.findById(req.params.id, function(err, article) {

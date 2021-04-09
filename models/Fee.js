@@ -17,6 +17,9 @@ const FeeSchema = new mongoose.Schema({
         status:{
             type:String,
             default:false
+        },
+        totalFee:{
+            type:Number
         }
     }],
     studentId:{

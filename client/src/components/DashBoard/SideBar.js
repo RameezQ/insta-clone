@@ -10,7 +10,7 @@ const SideBar = () => {
       Tip 2: you can also add an image using data-image tag
   */}
       <div className="logo"><Link to="/" className="simple-text logo-normal">
-          RQ Developer
+      <i className="material-icons">school</i> RQ Developer
         </Link></div>
       <div className="sidebar-wrapper">
         <ul className="nav">
@@ -22,13 +22,13 @@ const SideBar = () => {
           </li>
           <li className="nav-item ">
             <Link className="nav-link" to="/teacherlist">
-              <i className="material-icons">Teachers</i>
+              <i className="material-icons">person</i>
               <p>Teachers</p>
             </Link>
           </li>
           <li className="nav-item ">
             <Link className="nav-link" to="/studentlist">
-              <i className="material-icons">content_paste</i>
+              <i className="material-icons">groups</i>
               <p>Students</p>
             </Link>
           </li>

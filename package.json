@@ -21,6 +21,7 @@
     "nodemon": "^2.0.7",
     "react-bootstrap": "^1.5.2",
     "react-icons": "^4.2.0",
+    "react-moment": "^1.1.1",
     "react-pro-sidebar": "^0.6.0",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",

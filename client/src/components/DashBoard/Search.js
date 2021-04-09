@@ -39,7 +39,7 @@ const Search = ({users,fetchByName,search,query,searchQuery,setSearchQuery,check
                         {filterUsers ? filtereduserss.map((user) => (
                             <li key={user._id} 
                                 className="btn btn-sm-primary"
-                                onClick={() =>{fetchByName(user);checkExitFee(user._id)}}>
+                                onClick={() =>fetchByName(user)}>
                                 <small>{user.name}{" "} {user.cell} {" "}{user.rollNumber}</small></li>
                         )) : <Loader />}
                     </ul>

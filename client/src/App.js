@@ -1,4 +1,4 @@
-import React, { useEffect, createContext, useReducer, useContext } from 'react';
+import React, { useEffect, createContext, useReducer, useContext ,useState} from 'react';
 import NavBar from './components/Navbar'
 import "./App.css"
 import { BrowserRouter, Link, Route, Switch, useHistory } from 'react-router-dom'
@@ -19,12 +19,14 @@ import Teacher from './components/DashBoard/Teacher';
 import TeacherProfile from './components/DashBoard/TeacherProfile';
 import MarkSheet from './components/DashBoard/MarkSheet';
 import Fee from './components/DashBoard/Fee';
+import axios from 'axios';
 
 export const UserContext = createContext()
 
 
 const Routing = () => {
   const history = useHistory()
+  const [student, setStudent] = useState([])
   const { state, dispatch } = useContext(UserContext)
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"))
@@ -35,9 +37,11 @@ const Routing = () => {
         history.push('/signin')
     }
   }, [])
+
+
   return (
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" component={Home}  />
       <Route path="/signin" component={Signin} />
       <Route path="/signup" component={Signup} />
       <Route path='/addteacher' exact component={Teacher} />
