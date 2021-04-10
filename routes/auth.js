@@ -45,7 +45,7 @@ router.post('/signup',(req,res)=>{
                     to:user.email,
                     from:"rameezRq@outlook.com",
                     subject:"signup success",
-                    html:"<h1>welcome to Sanpak Engineering Industries (Pvt) Ltd.</h1>"
+                    html:`<h1>welcome ${user.name} to United School of khudian khas, kasur .</h1>`
                 })
                 res.json({message:"saved successfully"})
             })

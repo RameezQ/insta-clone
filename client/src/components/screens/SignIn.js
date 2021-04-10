@@ -59,11 +59,12 @@ e.preventDefault()
                         draggable: true,
                         progress: undefined,
                     });
-                    history.push('/')
+                    history.push('/') 
                 }
             }).catch(err => {
                 console.log(err)
             })
+           
     }
     return (
       <div>

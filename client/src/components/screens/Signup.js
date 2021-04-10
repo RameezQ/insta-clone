@@ -82,11 +82,12 @@ const SignIn  = ()=>{
                 progress: undefined,
             });
 
-            //    history.push('/signin')
+            history.push('/signin')
            }
         }).catch(err=>{
             console.log(err)
         })
+          
     }
     
     const PostData = (e)=>{
@@ -172,7 +173,7 @@ const SignIn  = ()=>{
                                 </div> 
                                 
                                 <div>
-                                    <button type="submit" className="btn btn-primary pull-right float-right">Sign in</button>
+                                    <button type="submit" className="btn btn-primary pull-right float-right">Sign up</button>
                                 </div>
                                 
                                    
